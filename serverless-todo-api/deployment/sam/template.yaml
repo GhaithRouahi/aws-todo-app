@@ -1,0 +1,151 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  serverless-todo-api
+
+  Sample SAM Template for a serverless To-Do CRUD API.
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: python3.12
+    Handler: handler.lambda_handler
+    CodeUri: ../../source/lambda/
+    MemorySize: 128
+    Architectures:
+      - x86_64
+
+Resources:
+  TodoItemsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TodoItems
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  TodoApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'POST, GET, PUT, DELETE, OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+  CreateTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.create_todo
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoItemsTable
+      Events:
+        CreateTodo:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: post
+            RestApiId: !Ref TodoApi
+
+  ReadTodosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.read_todos
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoItemsTable
+      Events:
+        ReadTodos:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: get
+            RestApiId: !Ref TodoApi
+
+  ReadTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.read_todo
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoItemsTable
+      Events:
+        ReadTodo:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: get
+            RestApiId: !Ref TodoApi
+
+  UpdateTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.update_todo
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoItemsTable
+      Events:
+        UpdateTodo:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: put
+            RestApiId: !Ref TodoApi
+
+  DeleteTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.delete_todo
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoItemsTable
+      Events:
+        DeleteTodo:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: delete
+            RestApiId: !Ref TodoApi
+
+  # CloudWatch Log Groups for each Lambda function
+  CreateTodoLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${CreateTodoFunction}
+      RetentionInDays: 7
+
+  ReadTodosLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ReadTodosFunction}
+      RetentionInDays: 7
+
+  ReadTodoLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${ReadTodoFunction}
+      RetentionInDays: 7
+
+  UpdateTodoLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${UpdateTodoFunction}
+      RetentionInDays: 7
+
+  DeleteTodoLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${DeleteTodoFunction}
+      RetentionInDays: 7
+
+Outputs:
+  TodoApiEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for Todo API"
+    Value: !Sub "https://${TodoApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos"

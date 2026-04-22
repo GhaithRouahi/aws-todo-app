@@ -1,0 +1,25 @@
+# Environment files
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# AWS SAM build artifacts
+.aws-sam/
+
+# Node.js dependencies (if any frontend tools are used)
+node_modules/
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# SAM deployment configuration
+samconfig.toml
+
+# OS-specific files
+.DS_Store
+Thumbs.db

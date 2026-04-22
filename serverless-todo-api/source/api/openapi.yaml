@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: To-Do List API
+  description: A simple REST API to manage a To-Do list.
+  version: 1.0.0
+servers:
+  - url: https://{api-id}.execute-api.{region}.amazonaws.com/Prod
+    variables:
+      api-id:
+        default: 'your-api-id'
+        description: 'API Gateway ID'
+      region:
+        default: 'us-east-1'
+        description: 'AWS Region'
+paths:
+  /todos:
+    get:
+      summary: List all to-do items
+      description: Retrieves a list of all to-do items.
+      responses:
+        '200':
+          description: A JSON array of to-do items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new to-do item
+      description: Adds a new item to the to-do list.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTodo'
+      responses:
+        '201':
+          description: To-do item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+  /todos/{id}:
+    get:
+      summary: Get a specific to-do item
+      description: Retrieves a single to-do item by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the to-do item to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The requested to-do item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '404':
+          description: To-do item not found
+        '500':
+          description: Internal server error
+    put:
+      summary: Update a to-do item
+      description: Updates an existing to-do item's content or completion status.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the to-do item to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTodo'
+      responses:
+        '200':
+          description: To-do item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Invalid input
+        '404':
+          description: To-do item not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a to-do item
+      description: Deletes a to-do item by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the to-do item to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: To-do item deleted successfully
+        '404':
+          description: To-do item not found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the to-do item.
+        task:
+          type: string
+          description: The content of the to-do item.
+        completed:
+          type: boolean
+          description: Whether the to-do item is completed.
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the item was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp of when the item was last updated.
+    NewTodo:
+      type: object
+      required:
+        - task
+      properties:
+        task:
+          type: string
+          description: The content of the to-do item.
+    UpdateTodo:
+      type: object
+      properties:
+        task:
+          type: string
+          description: The updated content of the to-do item.
+        completed:
+          type: boolean
+          description: The updated completion status.
