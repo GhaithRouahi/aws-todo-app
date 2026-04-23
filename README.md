@@ -34,33 +34,31 @@ The architecture is fully serverless, relying on managed services to handle appl
 ## Project Structure
 
 ```
-serverless-todo-api/
-│
-├── .github/
-│   └── workflows/
-│       └── deploy.yml         # GitHub Actions CI/CD pipeline
-│
+.
 ├── deployment/
 │   └── sam/
 │       └── template.yaml      # AWS SAM template for infrastructure
-│
-├── source/
-│   ├── lambda/
-│   │   └── handler.py         # Python Lambda function for CRUD operations
-│   ├── frontend/
-│   │   ├── index.html         # Frontend HTML
-│   │   ├── app.js             # Frontend JavaScript
-│   │   └── style.css          # Frontend CSS
-│   └── api/
-│       └── openapi.yaml       # OpenAPI 3.0 specification
-│
 ├── docs/
-│   └── architecture-diagram.png # Architecture diagram
-│
+│   ├── architecture-diagram.png # Architecture diagram
+│   ├── auth.png
+│   ├── compute.png
+│   ├── data.png
+│   ├── edge.png
+│   ├── monitoring.png
+│   └── sec.png
 ├── scripts/
 │   └── deploy.sh            # Manual deployment script
-│
+├── source/
+│   ├── api/
+│   │   └── openapi.yaml       # OpenAPI 3.0 specification
+│   ├── frontend/
+│   │   ├── app.js             # Frontend JavaScript
+│   │   ├── index.html         # Frontend HTML
+│   │   └── style.css          # Frontend CSS
+│   └── lambda/
+│       └── handler.py         # Python Lambda function for CRUD operations
 ├── .gitignore
+├── Archi.md
 ├── CHANGELOG.md
 ├── LICENSE
 └── README.md
