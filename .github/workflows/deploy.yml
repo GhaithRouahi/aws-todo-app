@@ -1,9 +1,7 @@
 name: Deploy Serverless Todo API
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  workflow_dispatch:
 
 jobs:
   deploy:
