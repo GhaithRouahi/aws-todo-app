@@ -132,6 +132,17 @@ The Lambda functions use the following environment variable, which is set in the
 *   **Data Encryption**: DynamoDB encrypts all data at rest by default. Data in transit is encrypted using TLS.
 *   **Authentication**: For production use, it is highly recommended to secure the API by integrating Amazon Cognito for user authentication and authorization.
 
+## Solution Architecture Overview
+
+The architecture follows the AWS Well-Architected Framework across 
+five pillars:
+
+- **Operational Excellence**: CloudWatch logs + X-Ray tracing
+- **Security**: IAM least privilege + WAF + Cognito JWT auth
+- **Reliability**: DynamoDB PITR + S3 versioning + Multi-AZ Lambda
+- **Performance**: CloudFront CDN + DynamoDB on-demand scaling
+- **Cost Optimization**: Fully serverless, pay-per-use model
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
