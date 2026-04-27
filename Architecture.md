@@ -6,7 +6,9 @@ built on AWS managed services. It eliminates the need for server
 provisioning, patching, or capacity planning. The system is organized 
 into 7 logical tiers, each responsible for a specific concern.
 
-![Architecture Diagram](docs/architecture-diagram.png)
+<div align="center">
+  <img src="docs/architecture-diagram.png" alt="Architecture Diagram" />
+</div>
 ---
 
 ### Tier 0 — Developer & Deployment
@@ -15,6 +17,8 @@ versioned and pushed to a **GitHub** repository via `git push`. From
 there, a **CI/CD pipeline** (GitHub Actions) automatically deploys 
 infrastructure and application updates to AWS using AWS SAM, ensuring 
 consistent and repeatable deployments.
+
+(for now the CI is disabled)
 
 ---
 
@@ -31,7 +35,9 @@ Incoming user traffic is first handled at the AWS edge:
   cross-site scripting (XSS), and rate-limit abuse — before any request 
   reaches the application layer.
 
-![Architecture Diagram](docs/edge.png)
+<div align="center">
+  <img src="docs/edge.png" alt="Architecture Diagram" />
+</div>
 
 ---
 
@@ -45,7 +51,9 @@ Before accessing the API, users authenticate through:
 - **API Gateway** validates this JWT token via a Cognito Authorizer, 
   ensuring only authenticated users can perform CRUD operations.
 
-![Architecture Diagram](docs/auth.png)
+<div align="center">
+  <img src="docs/auth.png" alt="Architecture Diagram" />
+</div>
 
 ---
 
@@ -62,7 +70,9 @@ The core application logic lives here:
   for resilience. Environment variables are used for configuration — 
   no hardcoded values.
 
-![Architecture Diagram](docs/compute.png)
+<div align="center">
+  <img src="docs/compute.png" alt="Architecture Diagram" />
+</div>
 
 
 ---
@@ -81,7 +91,9 @@ Persistent data is managed by two storage services:
   interacts with it using PutItem, GetItem, UpdateItem, and DeleteItem 
   operations.
 
-![Architecture Diagram](docs/data.png)
+<div align="center">
+  <img src="docs/data.png" alt="Architecture Diagram" />
+</div>
 
 
 ---
@@ -99,7 +111,9 @@ The system is fully observable through three services:
   allowing full end-to-end request visibility for debugging and 
   performance analysis.
 
-![Architecture Diagram](docs/monitoring.png)
+<div align="center">
+  <img src="docs/monitoring.png" alt="Architecture Diagram" />
+</div>
 
 
 ---
@@ -116,7 +130,9 @@ Security is applied as a cross-cutting concern at every layer:
 - All data in transit is encrypted via **TLS/HTTPS**. DynamoDB encrypts 
   all data at rest by default.
 
-![Architecture Diagram](docs/sec.png)
+<div align="center">
+  <img src="docs/sec.png" alt="Architecture Diagram" />
+</div>
 
 
 ---
@@ -129,7 +145,9 @@ Security is applied as a cross-cutting concern at every layer:
 - Lambda's **multi-AZ execution** ensures compute resilience with no 
   single point of failure.
 
-![Architecture Diagram](docs/data.png)
+<div align="center">
+  <img src="docs/data.png" alt="Architecture Diagram" />
+</div>
 
 
 ---

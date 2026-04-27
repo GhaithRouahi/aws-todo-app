@@ -8,6 +8,9 @@ The application includes a simple, dependency-free frontend to interact with the
 
 ## Architecture
 
+
+For a detailed architecture deep dive, see [Architecture.md](Architecture.md).
+
 The architecture is fully serverless, relying on managed services to handle application logic, data storage, and request routing.
 
 ![Architecture Diagram](docs/architecture-diagram.png)
@@ -129,18 +132,3 @@ The Lambda functions use the following environment variable, which is set in the
 *   **CORS**: Cross-Origin Resource Sharing (CORS) is enabled on the API Gateway to allow requests from the frontend domain.
 *   **Data Encryption**: DynamoDB encrypts all data at rest by default. Data in transit is encrypted using TLS.
 *   **Authentication**: For production use, it is highly recommended to secure the API by integrating Amazon Cognito for user authentication and authorization.
-
-## Solution Architecture Overview
-
-The architecture follows the AWS Well-Architected Framework across 
-five pillars:
-
-- **Operational Excellence**: CloudWatch logs + X-Ray tracing
-- **Security**: IAM least privilege + WAF + Cognito JWT auth
-- **Reliability**: DynamoDB PITR + S3 versioning + Multi-AZ Lambda
-- **Performance**: CloudFront CDN + DynamoDB on-demand scaling
-- **Cost Optimization**: Fully serverless, pay-per-use model
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
